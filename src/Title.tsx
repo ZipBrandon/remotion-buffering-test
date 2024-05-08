@@ -1,5 +1,4 @@
-import {interpolate} from 'remotion';
-import {useCurrentFrame} from 'remotion';
+import {interpolate, useCurrentFrame} from 'remotion';
 import React from 'react';
 
 export const Title: React.FC<{
@@ -9,7 +8,7 @@ export const Title: React.FC<{
 	const frame = useCurrentFrame();
 	const opacity = interpolate(frame, [20, 40], [0, 1], {
 		extrapolateLeft: 'clamp',
-		extrapolateRight: 'clamp',
+		extrapolateRight: 'clamp'
 	});
 	return (
 		<div

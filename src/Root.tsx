@@ -8,40 +8,39 @@ import {getVideoMetadata} from '@remotion/media-utils';
 const src = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4';
 export const RemotionRoot: React.FC = () => {
 
- const playerRef = useRef<PlayerRef>(null);
-
+	const playerRef = useRef<PlayerRef>(null);
 
 
 	const [buffering, setBuffering] = useState(false);
 
 	useEffect(() => {
-		const { current } = playerRef;
+		const {current} = playerRef;
 		if (!current) {
 			return;
 		}
 
 		const onBuffering = () => {
 			setBuffering(true);
-			console.log("on buffer");
+			console.log('on buffer');
 		};
 		const onResume = () => {
 			setBuffering(false);
-			console.log("on resume");
+			console.log('on resume');
 		};
 
-		current.addEventListener("waiting", onBuffering);
-		current.addEventListener("resume", onResume);
+		current.addEventListener('waiting', onBuffering);
+		current.addEventListener('resume', onResume);
 		return () => {
-			current.removeEventListener("waiting", onBuffering);
-			current.removeEventListener("resume", onResume);
+			current.removeEventListener('waiting', onBuffering);
+			current.removeEventListener('resume', onResume);
 		};
 	}, [playerRef, setBuffering]);
 
 	const [duration, setDuration] = useState(1);
 
-		useEffect(() => {
+	useEffect(() => {
 		getVideoMetadata(src)
-			.then(({ durationInSeconds }) => {
+			.then(({durationInSeconds}) => {
 				setDuration(Math.round(durationInSeconds * 30));
 			})
 			.catch((err) => {
@@ -49,44 +48,44 @@ export const RemotionRoot: React.FC = () => {
 			});
 	}, [src]);
 	const renderPlayPauseButton: RenderPlayPauseButton = useCallback(
-		({ playing, isBuffering }) => {
+		({playing, isBuffering}) => {
 
-			console.log("playing", playing)
-			console.log("isBuffering", isBuffering)
+			console.log('playing', playing);
+			console.log('isBuffering', isBuffering);
 			if (playing && isBuffering) {
 				return <div>P</div>;
 			}
 
 			return null;
 		},
-		[],
+		[]
 	);
 
 	return (
 		<>
 			<Player
-			component={MyComposition}
-			durationInFrames={
-			duration
-			}
-			ref={playerRef}
-			inputProps={{
-			titleText: 'Hello, world!',
-			titleColor: '#000',
-			logoColor: '#000',
-src
-			}}
+				component={MyComposition}
+				durationInFrames={
+					duration
+				}
+				ref={playerRef}
+				inputProps={{
+					titleText: 'Hello, world!',
+					titleColor: '#000',
+					logoColor: '#000',
+					src
+				}}
 
-			controls={true}
-			alwaysShowControls={true}
-			compositionHeight={720}
-			compositionWidth={1280}
-			fps={30}
+				controls={true}
+				alwaysShowControls={true}
+				compositionHeight={720}
+				compositionWidth={1280}
+				fps={30}
 
-			// renderPoster={renderPoster}
-			// showPosterWhenBuffering
-			renderPlayPauseButton={renderPlayPauseButton}
-		/>
+				// renderPoster={renderPoster}
+				// showPosterWhenBuffering
+				renderPlayPauseButton={renderPlayPauseButton}
+			/>
 
 		</>
 	);
